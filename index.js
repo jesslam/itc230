@@ -1,20 +1,25 @@
 //require http
 const http = require("http");
+http.createServer((req, res) => {
+    const path = req.url.toLowerCase();
+    switch(path) {
+        case '/':
+            const fs = require("fs");
+            fs.readFile("public/home.html", (err, data) => {
+                if (err) return console.error(err);
+                res.writeHead(200, {'Content-Type' : 'text/html'});
+                res.end(data.toString());
+            });
+            break;
 
-const server = http.createServer(function(req, res){
-    res.writeHead(200, {"Content-Type": "text/html"});
-    res.end(`
-    <!DOCTYPE HTML>
-    <html>
-    <head>
-        <title>Jess Lam ITC 230</title>
-    </head>
-    <body>
-        <h1>Welcome to my page</h1>
-        <h2>Page under construction</h2>
-    </body>
-    </html>`);
-
-})
-
-server.listen(3000);
+        case '/about':
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end('About page');
+            break;
+        
+        default:
+            res.writeHead(404, {'Content-Type': 'text/plain'});
+            res.end('404 - Page not found')
+            break;
+    }
+}).listen(process.env.PORT || 3000);
