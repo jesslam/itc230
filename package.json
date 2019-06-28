@@ -1,0 +1,24 @@
+{
+  "name": "itc230",
+  "version": "1.0.0",
+  "description": "sample app for itc230",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesslam/itc230.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "HTML",
+    "CSS"
+  ],
+  "author": "Jessica Lam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jesslam/itc230/issues"
+  },
+  "homepage": "https://github.com/jesslam/itc230#readme"
+}
