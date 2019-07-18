@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Jess Lam ITC 230</title>
+</head>
+<body>
+    <h2>Search the library</h2>
+    <FORM action="/detail" method="POST">
+        Enter an album: <input type=text name="keyword" required maxlength="50">
+        <br><br>
+        <button>Submit</button>
+    </FORM>
+    <br>
+    {{#each library}}
+    <li><a href="/detail?album={{album}}">{{album}}</a></li>
+    {{/each}}
+</body>
+</html>

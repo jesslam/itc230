@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <p><a href="/">Home</a></p>
+        {{#if result.deleted}}
+            <p>{{album}} has been deleted.</p>
+            <p>Remaining number of albums: {{ length }}</p>
+        {{else}}
+            <p>{{query}} was not found.</p>
+        {{/if}}
+    </body>
+</html>

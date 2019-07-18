@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <p><a href="/">Home</a></p>
+        <h2>Search Details</h2>
+        <p>Your search was: [{{ query }}]</p>
+    {{#if result}}
+        <li>Artist: {{ result.artist }}
+        <li>Song: {{ result.song }}
+        <li>Album: {{ result.album }}
+        <p><a href="/delete?album={{result.album}}">Delete</a></p>
+    {{else}}
+        <p>[{{ query }}] was not found.</p>
+    {{/if}}
+
+    </body>
+</html>
