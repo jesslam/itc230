@@ -33,7 +33,7 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/delete', (req, res) => {
-    let result = data.deleteItem(req.query.album); //delete book object
+    let result = data.deleteItem(req.query.album); //delete album object
     let liblength = data.getAll().length;
     res.render("delete", {
         album: req.query.album,
@@ -56,15 +56,28 @@ app.get('/detail', (req, res) => {
 
 //handle form submit response
 app.post('/detail', (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     // res.type('text/html');
     let found = data.getItem(req.body.keyword);
-    res.render('detail', {
+    res.render("detail", {
         artist: req.body.artist,
         song: req.body.song,
         result: found,
         album: data.getAll(),
         query: req.body.keyword
+    });
+});
+
+//add to data module
+app.get('/add', (req, res) => {
+    let result = data.addItem(req.query);
+    console.log(req.query)
+    let length = data.getAll().length
+    console.log(result)
+    console.log('Result is ' + length);
+    res.render("detail", {
+        result: result,
+        query: req.query
     });
 });
 
