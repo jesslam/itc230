@@ -6,10 +6,21 @@
 <body>
     <h2>Search the library</h2>
     <FORM action="/detail" method="POST">
-        Enter an album: <input type=text name="keyword" required maxlength="50">
+        Look for an album: <input type=text name="keyword" required maxlength="50">
+        <br><br>
+        <button>Search</button><br><br>
+    </FORM>
+    <div class="newObj">
+    <h2>Add to the library</h2>
+    <FORM action="/add" method="POST">
+        New Artist: <input type=text name="artist" required maxlength="50"><br>
+        New Song: <input type=text name="song" required maxlength="50"><br>
+        New Album:  <input type=text name="album" required maxlength="50"><br>
         <br><br>
         <button>Submit</button>
+    
     </FORM>
+    </div>  
     <br>
     {{#each library}}
     <li><a href="/detail?album={{album}}">{{album}}</a></li>

@@ -3,12 +3,12 @@
     <head></head>
     <body>
         <p><a href="/">Home</a></p>
-        {{#if result.deleted}}
-            <p>{{album}} has been deleted.</p>
-            <p>Remaining number of albums: {{ length }}</p>
+        {{#if deleted}}
+            <p>{{ album }} has been deleted.</p>
+            <p>Remaining number of albums: {{ count }}</p>
         {{else}}
-            <p>{{album}} was not found.</p>
-            <p>Remaining number of albums: {{ length }}</p>
+            <p>{{ album }} was not found.</p>
+            <p>Remaining number of albums: {{ count }}</p>
         {{/if}}
     </body>
 </html>
