@@ -60,19 +60,21 @@ app.get('/detail', (req, res) => {
         console.log(item);
         res.type('text/html');
         res.render("detail", {
+            result: {result:true},
             result: item,
-            query: req.query.album
+            query: req.query.album,
         });
       }); 
 }); 
 
 //handle form submit response
 app.post('/detail', (req, res) => {
-    Albums.findOne({'album' : req.query.keyword}, (err, item) => {
+    Albums.findOne({'album' : req.query.album}, (err, item) => {
         if (err) return next(err);
         console.log(item);
         res.type('text/html');
         res.render("detail", {
+            result: {result:true},
             result: item,
             query: req.query.keyword
         });
@@ -82,8 +84,8 @@ app.post('/detail', (req, res) => {
 //add to data module
 app.post('/add', (req, res) => {
     let newEntry = {'artist': req.body.artist, 'song': req.body.song, 'album': req.body.album};
-    Albums.updateOne({'album': req.body.album}, newEntry, {upsert:true}, (err) => {
-        //console.log(result);
+    Albums.updateOne({'album': req.body.album}, newEntry, {upsert:true}, (err, result) => {
+        console.log({result});
         if (err) return (err);
         res.type('text/html');
         Albums.countDocuments({},(err, count)=> {
