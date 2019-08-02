@@ -2,17 +2,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const data = require("./lib/album.js");
+//const router = express.Router();
+//const data = require("./lib/album.js");
 const Albums = require("./models/album.js");
 /* const qs = require("querystring");
 const http = require("http")
 const fs = require("fs");  */
 
-
-
 app.set('port', process.env.PORT || 3000);
+//app.use(albumRoute);
 app.use(express.static(__dirname + "./public")); //set location for static files
 app.use(bodyParser.urlencoded({extended: true})); //parse form submissions
+app.use('/api', require('cors')()); // set Access-Control-Allow-Origin header for api route
 
 const handlebars = require("express-handlebars");
 app.engine(".html", handlebars({extname: '.html', defaultLayout: false}));
@@ -92,6 +93,56 @@ app.post('/add', (req, res) => {
             res.render('add', {
                 result: req.body,
                 count: count
+            });
+        });
+    });
+});
+
+// apis
+
+//get all collection documents
+app.get('/api/catalog', (req, res, next) => {
+    Albums.find((err, result) => {
+        if (err || !result) return next(err);
+        res.json(result);
+    })
+})
+
+//get one doc from collection
+app.get('/api/catalog/:album', (req, res, next) => {
+    let album = req.params.album
+    console.log(album);
+    Albums.findOne({album:album},(err, result) => {
+        if (err || !result) return next(err);
+        res.json(result);
+    });
+});
+
+//find and update an existing doc in the collection or add new
+app.post('/api/add/', (req, res) => {
+    let newEntry = {'artist': req.body.artist, 'song': req.body.song, 'album': req.body.album};
+    Albums.updateOne({'album': req.body.album}, newEntry, {upsert:true}, (err, result) => {
+        //console.log({result});
+        if (err) return (err);
+        Albums.countDocuments({},(err, count)=> {
+            res.json({
+                result: result.n + ' doc was added.',
+                count: count
+            });
+        });
+    });
+});
+
+//delete a doc from collection
+app.get('/api/delete/', (req, res) => {
+    Albums.deleteOne({'album': req.query.album}, (err, result) => {
+        if (err || !result) return next(err);
+        //console.log({result});
+        Albums.countDocuments({}, (err, count) => {
+            res.json({
+                result: result.n + ' doc was deleted.',
+                count: count,
+                deleted: (result.deletedCount>0) 
             });
         });
     });
