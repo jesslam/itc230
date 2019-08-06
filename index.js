@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
     Albums.find({}, (err, items) => {
         if (err) return next(err);
         //console.log(items.length);
-        res.render('home', {library: items });
+        res.render('home', {library: JSON.stringify(items)});
     });
 });
 
