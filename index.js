@@ -13,6 +13,7 @@ app.set('port', process.env.PORT || 3000);
 //app.use(albumRoute);
 app.use(express.static(__dirname + "./public")); //set location for static files
 app.use(bodyParser.urlencoded({extended: true})); //parse form submissions
+app.use(bodyParser.json());
 app.use('/api', require('cors')()); // set Access-Control-Allow-Origin header for api route
 
 const handlebars = require("express-handlebars");
@@ -122,31 +123,46 @@ app.get('/api/catalog/:album', (req, res, next) => {
 app.post('/api/add/', (req, res) => {
     let newEntry = {'artist': req.body.artist, 'song': req.body.song, 'album': req.body.album};
     Albums.updateOne({'album': req.body.album}, newEntry, {upsert:true}, (err, result) => {
-        //console.log({result});
+        console.log({result});
         if (err) return (err);
-        Albums.countDocuments({},(err, count)=> {
+        if (result.upserted) {
+            console.log(result.upserted)
             res.json({
-                result: result.n + ' doc was added.',
-                count: count
+                added: result.nModified == 0,
+                id: result.upserted[0]._id
             });
-        });
+
+        } else {
+            res.json({
+                added: result.nModified == 0
+            });
+        };
+
     });
 });
 
 //delete a doc from collection
-app.get('/api/delete/', (req, res) => {
-    Albums.deleteOne({'album': req.query.album}, (err, result) => {
+app.get('/api/delete/:id', (req, res) => {
+    Albums.deleteOne({_id: req.params.id}, (err, result) => {
         if (err || !result) return next(err);
-        //console.log({result});
-        Albums.countDocuments({}, (err, count) => {
+        console.log(result)
+        if (result.ok){
+            console.log(result)
+            res.json({
+                result: result._id,
+                deleted: (result.deletedCount)
+            });
+
+/* //        Albums.countDocuments({}, (err, count) => {
             res.json({
                 result: result.n + ' doc was deleted.',
-                count: count,
+//                count: count,
                 deleted: (result.deletedCount>0) 
-            });
-        });
+            }); */
+        }
     });
 });
+//});
 
 //define 404 handler
 app.use( (req, res) => {
